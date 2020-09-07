@@ -121,16 +121,15 @@ def watson_instance(iam_apikey: str, url: str, version: str = "2019-02-28") -> A
 
 class GET_MESSAGE(Resource):
     def post(self):
-        # message = request.json["message"]
-        # _id = request.json["id"]
+        message = request.json["message"]
 
-        # print ("message: "+ message+". id:"+ _id )
+        print ("message: "+ message )
 
         resp = watson_response(watson_create_session(), request.json["message"] )
         # return jsonify( este_es_el_mensaje = request.json["message"])
         return jsonify(
             text=resp['response']['output']['generic'][0]["text"],
-            intent=resp['response']['output']['intents'][0]["intent"],
+            # intent=resp['response']['output']['intents'][0]["intent"],
         )
 
 
