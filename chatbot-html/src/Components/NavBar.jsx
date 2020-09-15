@@ -21,10 +21,10 @@ class NavBar extends React.Component{
     render () {
         return (
             <Navbar bg="dark" variant="dark">
-                <Navbar.Brand href="/">Navbar</Navbar.Brand>
+                <Navbar.Brand href="/">Proyecto Web</Navbar.Brand>
                 <Nav className="mr-auto">
-                    <Nav.Link href="/home">Home</Nav.Link>
-                    <Nav.Link href="/user">User</Nav.Link>
+                    <Nav.Link href="/home">miTec</Nav.Link>
+                    <Nav.Link href="/user">Administradores</Nav.Link>
                     <Nav.Link href="/">{this.state.search}</Nav.Link>
                 </Nav>
                 <Form inline>
