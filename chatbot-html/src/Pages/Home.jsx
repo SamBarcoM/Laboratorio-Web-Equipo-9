@@ -13,7 +13,9 @@ class Home extends React.Component{
                     <li>Emilio Eugenio Gregorio Cantón Bermúdez</li>
                     <li>Samantha Barco Mejía</li>
                 </ul>
+                
             </div>
+            
         );
     }
 }

@@ -8,8 +8,8 @@ import ReactHtmlParser from "react-html-parser";
 import { Widget, renderCustomComponent } from "react-chat-widget";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import 'bootstrap';
 import * as axios from 'axios';
-
 import 'react-chat-widget/lib/styles.css';
 import './Components/chat.css';
 
@@ -48,8 +48,8 @@ function App() {
       </Switch>
       {/* <CustomChatbot />  */}
       <Widget handleNewUserMessage={handleNewUserMessage}
-        title="Chatbot"
-        subtitle= "Hola! Esta es la tarea 3."
+        title="Graduation Candidates Chatbot"
+        subtitle= "Hello! If you have any question regarding Graduation Requirements please ask our assistant"
       />
       
     </Router>
