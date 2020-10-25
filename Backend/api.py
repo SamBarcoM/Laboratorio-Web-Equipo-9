@@ -23,11 +23,11 @@ import pymongo
 #Twilio
 from twilio.rest import Client 
  
-account_sid = 'ACcd05049a2f41238d3c7a8f840e098a1a' 
-auth_token = '7475767965de793cc241c33cd3a2b16d' 
+account_sid = '' 
+auth_token = '' 
 client = Client(account_sid, auth_token) 
 
-uri = "mongodb+srv://sam2:sam2@cluster0-fibmq.gcp.mongodb.net/web?retryWrites=true&w=majority"
+uri = ""
 db = None
 email = "a01196844@itesm.mx"
 
