@@ -166,7 +166,7 @@ def watson_response(session_id1, message, channel):
                 elif user_data[request_data.get("entity-value")] == 0:
                     print("user hasn't completed the ", request_data.get("entity-value"))
                     response = retrieveAnswer("responses", request_data.get("intent"), None, "negative", channel)
-                response = replaceHTML(response, requirement, channel )
+                response = replaceVariables(response, requirement, channel )
                 print("activity requirements")
             elif request_data.get("intent")=="questionMeetActivity":
                 print("activity completeness")
@@ -181,14 +181,14 @@ def watson_response(session_id1, message, channel):
                 elif user_data[request_data.get("entity-value")] == 0:
                     print("user hasn't completed the ", request_data.get("entity-value"))
                     response = retrieveAnswer("responses", request_data.get("intent"), None, "negative", channel)
-                response = replaceHTML(response, requirement, channel )
+                response = replaceVariables(response, requirement, channel )
             elif request_data.get("intent")=="questionContact":
                 # First retrieve requirement
                 requirement = retrieveRequirement(request_data.get("entity-value"))
                 # Then retrieve the answer
                 response = retrieveAnswer("responses", request_data.get("intent"), None, None, channel)
                 # Substitute data in contact card with specific requirement values
-                response = replaceHTML(response, requirement, channel )
+                response = replaceVariables(response, requirement, channel )
                 print("contact")    
             elif request_data.get("intent")=="questionIncompleteActivities":
                 user_data = retrieveCompletedActivities(email,None)
@@ -215,7 +215,9 @@ def watson_response(session_id1, message, channel):
 
             else:
                 print("other")
+                user_data = retrieveStudentInfo(email)
                 response = retrieveAnswer("responses", request_data.get("intent"), request_data.get("entity-value"), None, channel)
+                response = replaceVariables(response, user_data, channel )
         # De lo contrario, indica al usuario que no entendió a lo que se refería para que vuelva a ingresar la pregunta
         except:
             response = "<p>Sorry, I didn't understand</p>"
@@ -233,7 +235,7 @@ def watson_response(session_id1, message, channel):
             elif user_data[request_data.get("entity-value")] == 0:
                 print("user hasn't completed the ", request_data.get("entity-value"))
                 response = retrieveAnswer("responses", request_data.get("intent"), None, "negative", channel)
-            response = replaceHTML(response, requirement, channel)
+            response = replaceVariables(response, requirement, channel)
             print("activity requirements")
         elif request_data.get("intent")=="questionMeetActivity":
             print("activity completeness")
@@ -248,7 +250,7 @@ def watson_response(session_id1, message, channel):
             elif user_data[request_data.get("entity-value")] == 0:
                 print("user hasn't completed the ", request_data.get("entity-value"))
                 response = retrieveAnswer("responses", request_data.get("intent"), None, "negative", channel)
-            response = replaceHTML(response, requirement, channel )
+            response = replaceVariables(response, requirement, channel )
         elif request_data.get("intent")=="questionContact":
             # First retrieve requirement
             print(request_data)
@@ -257,7 +259,7 @@ def watson_response(session_id1, message, channel):
             response = retrieveAnswer("responses", request_data.get("intent"), None, None, channel)
             # Substitute data in contact card with specific requirement values
             print(requirement)
-            response = replaceHTML(response, requirement, channel )
+            response = replaceVariables(response, requirement, channel )
             print("contact")    
         elif request_data.get("intent")=="questionIncompleteActivities":
                 user_data = retrieveCompletedActivities(email,None)
@@ -283,7 +285,11 @@ def watson_response(session_id1, message, channel):
                 response = retrieveAnswer("responses", request_data.get("intent"), None, "list", channel)
             response = add_carousel(response, create_whatsapp_details_list(user_activities))
             print("completed")
-    
+        else:
+                print("other")
+                user_data = retrieveStudentInfo(email)
+                response = retrieveAnswer("responses", request_data.get("intent"), request_data.get("entity-value"), None, channel)
+                response = replaceVariables(response, user_data, channel )
     return response
 
 def watson_instance(iam_apikey: str, url: str, version: str = "2019-02-28") -> AssistantV2:
@@ -385,7 +391,7 @@ def add_carousel( html, carousel):
     return html
 
 # Adapt html generic response to asked requirement
-def replaceHTML( html, requirementJSON, channel ):
+def replaceVariables( html, requirementJSON, channel ):
     out = "$$$*$$$"
     result = html
     for key,value in requirementJSON.items():
@@ -456,6 +462,13 @@ def retrieveCompletedActivities( student_mail, entity):
         result = collection.find_one({"mail":student_mail}, {entity:1})
     return result
 
+def retrieveStudentInfo( student_mail ):
+    global db
+    collection = db["students"]
+    result = collection.find_one({"mail":student_mail}, {"_id":0,"name":1,"mail":1,"campus":1,"student_number":1})
+    print(result)
+    return result
+
 def retrieveActivitiesData( user_data, completeness ):
     global db
     collection = db["requirements"]
@@ -480,36 +493,21 @@ def send_message( phone, message ):
 class GET_MESSAGE(Resource):
     def post(self):
         message = request.json["message"]
-
         print ("message: "+ message )
-
-        
         resp = watson_response(watson_create_session(), request.json["message"], "web" )
         # return jsonify( este_es_el_mensaje = request.json["message"])
         return jsonify(
             text=resp,
-            # intent=resp['response']['output']['intents'][0]["intent"],
         )
 
 class GET_MESSAGE_WHATSAPP(Resource):
     def post(self):
         number = request.form['From']
         message_body = request.form['Body']
-
-
         print ("message: "+ message_body + " phone " + number)
-
-        
         resp = watson_response(watson_create_session(), message_body, "telephone" )
-        print(resp)
         send_message(number, resp)
-        # return jsonify( este_es_el_mensaje = request.json["message"])
-        #return jsonify(
-        #    text=resp,
-        #    # intent=resp['response']['output']['intents'][0]["intent"],
-        #)
-
-
+        return
 
 
 api.add_resource(GET_MESSAGE, '/getMessage')  # Route_1
