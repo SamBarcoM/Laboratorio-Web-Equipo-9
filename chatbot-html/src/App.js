@@ -13,6 +13,8 @@ import * as axios from 'axios';
 import 'react-chat-widget/lib/styles.css';
 import './Components/chat.css';
 
+// import {useAuth0} from '@auth0/auth0-react';
+
 class CustomComponent extends React.Component {
   render() {
     return (
@@ -30,8 +32,13 @@ function App() {
 		});
 
     renderCustomComponent(CustomComponent, { custom: data.text} );
-	}
+  }
 
+  // const{ isAuthenicated, loginWithRedirect, isloading } = useAuth0();
+
+  // if(isloading){
+  //   return (<div>Loading...</div>);
+  // }
   return (
     <Router>
       <NavBar/>
