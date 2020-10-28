@@ -1,0 +1,13 @@
+.wrapper {
+	width: 100vw;
+	height: 100vh;
+	padding: 20px 0;
+	background-image: url("https://mitec.itesm.mx/Wallpapers/fondo_gris_tec.png");
+}
+
+.wrapper__content {
+	width: 90%;
+	display: flex;
+	margin: 0 auto;
+	justify-content: space-around;
+}
