@@ -50,7 +50,7 @@ function App() {
           <User />
         </Route>
         <Route exact path="/">
-          <LandingPage />
+          <Home />
         </Route>
       </Switch>
       {/* <CustomChatbot />  */}
