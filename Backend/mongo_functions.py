@@ -49,6 +49,14 @@ class mongoController():
         return returnResult
 
     # Retrieve entity's document (Watson's entity)
+    def retrieve_event( self, eventId ):
+        print(eventId)
+        collection = self.db["events"]
+        result = collection.find_one({"id":eventId})
+        print("event is",result)
+        return result
+    
+    # Retrieve event's document
     def retrieve_requirement( self, entity ):
         collection = self.db["requirements"]
         if entity == None:
