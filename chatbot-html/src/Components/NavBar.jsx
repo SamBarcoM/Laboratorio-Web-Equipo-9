@@ -66,7 +66,7 @@ class NavBar extends React.Component{
                         <FormControl onChange={this.searchItem} type="text" placeholder="Search" className="mr-sm-2" />
                         <Button variant="outline-info">Search</Button>
                     </Form>
-                    <Profile></Profile>
+                    {/* <Profile></Profile> */}
                 </Navbar>     
                   
             );

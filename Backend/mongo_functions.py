@@ -15,7 +15,7 @@ class mongoController():
     
     # Connect to mongoDB
     def connect_mongo( self ):
-        print("self.uri")
+        print(self.uri)
         client = pymongo.MongoClient(self.uri)
         self.db = client.get_default_database()
         return

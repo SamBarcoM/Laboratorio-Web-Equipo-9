@@ -1,4 +1,5 @@
 # API
+import datetime
 import os
 import json
 import logging
@@ -123,6 +124,8 @@ def watson_response(session_id1, message, channel):
             "intent": response.get("response").get("output").get("intents")[0].get("intent"),
             "entity-value": response.get("response").get("output").get("entities")[0].get("value"),
             "message": message,
+            "created_at": datetime.datetime.utcnow(),
+            "user_email": email,
         }
     except:
         # Mensaje tiene intent pero no entity
@@ -131,6 +134,8 @@ def watson_response(session_id1, message, channel):
                 "intent": response.get("response").get("output").get("intents")[0].get("intent"),
                 "entity-value": None,
                 "message": message,
+                "created_at": datetime.datetime.utcnow(),
+                "user_email": email,
             }
         # Mensaje desconocido por AI agent
         except:
@@ -138,6 +143,8 @@ def watson_response(session_id1, message, channel):
                 "intent": None,
                 "entity-value": None,
                 "message": message,
+                "created_at": datetime.datetime.utcnow(),
+                "user_email": email,
             }
     
     # Almacena el request en la colección requests de MongoDB
