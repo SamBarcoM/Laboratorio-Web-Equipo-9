@@ -7,13 +7,13 @@ import NavBar from "./Components/NavBar"
 import ReactHtmlParser from "react-html-parser";
 import { Widget, renderCustomComponent } from "react-chat-widget";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { useAuth0 } from '@auth0/auth0-react';
 
 import 'bootstrap';
 import * as axios from 'axios';
 import 'react-chat-widget/lib/styles.css';
 import './Components/chat.css';
 
-// import {useAuth0} from '@auth0/auth0-react';
 
 class CustomComponent extends React.Component {
   render() {
@@ -26,16 +26,25 @@ class CustomComponent extends React.Component {
 }
 
 function App() {
+  const [email, setEmail] = React.useState('');
 	const handleNewUserMessage = async (message) => {
 		const { data } = await axios.post('http://127.0.0.1:5002/getMessage', {
-			message
+      message,
+      email
 		});
 
     renderCustomComponent(CustomComponent, { custom: data.text} );
   }
 
-  // const{ isAuthenicated, loginWithRedirect, isloading } = useAuth0();
+  const { user } = useAuth0();
 
+  // Only run once when the element is rendered
+  React.useEffect(() => {
+    if (user) {
+      console.log(user);
+      setEmail(user.email);
+    }
+  }, [user]);
   // if(isloading){
   //   return (<div>Loading...</div>);
   // }

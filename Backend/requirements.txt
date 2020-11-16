@@ -10,3 +10,5 @@ flask-restplus==0.13.0
 Flask-SQLAlchemy==2.4.1
 jsonify==0.5
 ibm-watson==4.1.0
+twilio==6.47.0
+pymongo==3.11.0
