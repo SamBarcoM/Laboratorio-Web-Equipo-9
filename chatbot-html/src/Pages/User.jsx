@@ -10,19 +10,34 @@ import {
     VictoryTheme,
 } from 'victory';
 import WordCloud from 'react-d3-cloud';
+import axios from 'axios';
 
 class User extends React.Component{
+    state = {
+        sampleNoIntentAsking: null,
+        samplePercentageCompletedUsers: null,
+        samplePercentageData: null,
+        sampleNoUsersUsingFeature: null,
+    }
+
+    async componentDidMount() {
+        const { data } = await axios.get('http://127.0.0.1:5002/charts');
+        this.setState({
+           sampleNoIntentAsking: data.no_missing_per_reqs,
+           samplePercentageCompletedUsers: data.percentage_student_to_graduate,
+           samplePercentageData: this.calculateCircularData(data.percentage_student_to_graduate),
+           sampleNoUsersUsingFeature: data.unique_users_per_month,
+        });
+    }
+
+    calculateCircularData(percent) {
+        return [{ x: 1, y: percent }, { x: 2, y: 100 - percent }];
+    }
+
     render(){
         // *** Hardcode chart details for now. ***
         
         // (AreaGraph) # of Users using this features.
-        const sampleNoUsersUsingFeature = [
-          { x: 1, y: 2, y0: 0 },
-          { x: 2, y: 3, y0: 1 },
-          { x: 3, y: 5, y0: 1 },
-          { x: 4, y: 4, y0: 2 },
-          { x: 5, y: 6, y0: 2 }
-        ];
 
         // (WordCloud) Where users are stuck in intent.
         const sampleStuckOnIntent = [
@@ -40,26 +55,24 @@ class User extends React.Component{
         const sampleRotate = word => word.value % 360;
 
         // (Bargraph) People missing certain requirements.
-        const sampleNoIntentAsking = [
-            { x: 1, y: 2, y0: 0 },
-            { x: 2, y: 3, y0: 0 },
-            { x: 3, y: 5, y0: 0 },
-            { x: 4, y: 4, y0: 0 },
-            { x: 5, y: 6, y0: 0 }
-        ];
+        // this.state.sampleNoIntentAsking = [
+        //     { x: "Hello", y: 2, y0: 0 },
+        //     { x: "There", y: 3, y0: 0 },
+        //     { x: "ABC", y: 5, y0: 0 },
+        //     { x: "With youi", y: 4, y0: 0 },
+        //     { x: "Withougt", y: 6, y0: 0 }
+        // ];
         
         // (StackedBarGraph) Overall status of students missing items by CAREER.
 
         // (CircularProgressBar) % of students ready to graduate.
-        const samplePercentageCompletedUsers = 25;
-        const samplePercentageData = [{ x: 1, y: samplePercentageCompletedUsers }, { x: 2, y: 100 - samplePercentageCompletedUsers }];
 
         return (
             <div>
                 <h1>Página que simula la bienvenida del equipo de graduación</h1>
                 <p>Se pueden revisar los siguientes datos basados en las preguntas de los alumnos</p>
                 <VictoryChart theme={VictoryTheme.material}>
-                    <VictoryArea style={{ data: { fill: "#c43a31" }}} data={sampleNoUsersUsingFeature}/>
+                    <VictoryArea style={{ data: { fill: "#c43a31" }}} data={this.state.sampleNoUsersUsingFeature}/>
                 </VictoryChart>
                 <WordCloud
                     data= {sampleStuckOnIntent}
@@ -70,7 +83,7 @@ class User extends React.Component{
                     theme={VictoryTheme.material}
                     domainPadding={10}
                 >
-                    <VictoryBar style={{ data: { fill: "#c43a31" }}} data={sampleNoIntentAsking}/>
+                    <VictoryBar style={{ data: { fill: "#c43a31" }}} data={this.state.sampleNoIntentAsking}/>
                 </VictoryChart>
                 <VictoryStack colorScale={["tomato", "orange", "gold"]}>
                     <VictoryBar
@@ -88,7 +101,7 @@ class User extends React.Component{
                         standalone={false}
                         animate={{ duration: 1000 }}
                         width={400} height={400}
-                        data={samplePercentageData}
+                        data={this.state.samplePercentageData}
                         innerRadius={120}
                         cornerRadius={25}
                         labels={() => null}
@@ -100,7 +113,7 @@ class User extends React.Component{
                           }
                         }}
                     />
-                    <VictoryAnimation duration={1000} data={{ percent: samplePercentageCompletedUsers, data: samplePercentageData }}>
+                    <VictoryAnimation duration={1000} data={{ percent: this.state.samplePercentageCompletedUsers, data: this.state.samplePercentageData }}>
                         {(newProps) => {
                           return (
                             <VictoryLabel

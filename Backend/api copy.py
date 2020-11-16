@@ -17,6 +17,8 @@ from ibm_watson import AssistantV2, ApiException
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from flask import jsonify
 
+# Resources
+from chart_resource import ChartResource
 
 # Classes
 from text_functions import textBuilder
@@ -34,7 +36,8 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 assistant_api_key = os.getenv("assistant_api_key")
 
 txtBldr = textBuilder()
-dbController = mongoController()
+# Create a database singleton instance.
+dbController = mongoController.INSTANCE
 waController = whatsappController()
 
 # WATSON FUNCTIONS
@@ -277,6 +280,9 @@ class GET_MESSAGE_WHATSAPP(Resource):
 
 api.add_resource(GET_MESSAGE, '/getMessage')  # Route_1
 api.add_resource(GET_MESSAGE_WHATSAPP, '/getMessageWhatsapp')  # Route_2
+
+# Chart handlers.
+api.add_resource(ChartResource, '/charts')  # Route_2
 
 #connect to mongo
 try:

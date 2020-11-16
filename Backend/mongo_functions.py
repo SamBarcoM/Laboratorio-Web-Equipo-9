@@ -8,6 +8,9 @@ import pymongo
 load_dotenv()
 
 class mongoController():
+    # Singleton instance.
+    INSTANCE = None
+
     def __init__( self ):
         self.uri = os.getenv("mongo_uri")
         self.db = None
@@ -26,6 +29,69 @@ class mongoController():
         collection = self.db[collection_name]
         collection.insert_one(document)
         return
+    
+    # Retrieve all requests.
+    def retrieve_requests(self):
+        collection = self.db["requests"]
+        requests = []
+        for request in collection.find():
+            requests.append(request)
+        return requests
+    
+    def get_unique_users_per_month(self):
+        collection = self.db["requests"]
+        months = []
+        calculation_cursor = collection.aggregate([
+            {
+                '$project': {
+                    'user_email': 1,
+                    'month': { '$month': '$created_at'},
+                }
+            },
+            {
+                '$group': {
+                    '_id': '$month',
+                    'total': { '$sum': 1 }
+                }
+            }
+        ])
+
+        for calculation in calculation_cursor:
+            months.append(calculation)
+        
+        return months
+
+    # Retrieve all users.
+    def retrieve_students(self):
+        collection = self.db["students"]
+        requests = []
+        for request in collection.find():
+            requests.append(request)
+        return requests
+    
+    # Get count of students with a certain field.
+    def get_student_field_count(self, field_name):
+        collection = self.db["students"]
+        return collection.count_documents({ field_name: 1 })
+    
+    def get_student_completed_count(self):
+        collection = self.db["students"]
+        return collection.count_documents({
+            'career exam': 1,
+            'CENEVAL': 1,
+            'e sign': 1,
+            'education credit': 1,
+            'english exam': 1,
+            'financial services': 1,
+            'graduation request': 1,
+            'library': 1,
+            'photography': 1,
+            'social service': 1,
+        })
+    
+    def get_students_count(self):
+        collection = self.db["students"]
+        return collection.count_documents({})
     
     # Retrieve a document given intent, entity, status
     def retrieve_answer( self, collection_name, intent, entity, status, channel):
@@ -88,3 +154,5 @@ class mongoController():
             if value == completeness:
                 activities.append(collection.find_one({"id":key}))
         return activities
+    
+mongoController.INSTANCE = mongoController()
