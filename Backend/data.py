@@ -3,6 +3,7 @@
 # Classes
 from mongo_functions import mongoController
 
+
 students = [
 	{
 		"name": "Leilani Dunn",
@@ -1812,3 +1813,6 @@ dbController.connect_mongo()
 for student in students:
     student["mail"] = student["student_number"]+"@itesm.mx"
     dbController.create("students",student)
+
+
+dbController.to_int( "students" )

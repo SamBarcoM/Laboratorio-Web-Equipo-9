@@ -25,7 +25,7 @@ from text_functions import textBuilder
 from mongo_functions import mongoController
 from twilio_functions import whatsappController
 
-email = "a01196844@itesm.mx"
+email = "a04507949@itesm.mx"
 
 load_dotenv()
 
@@ -151,13 +151,12 @@ def watson_response(session_id1, message, channel):
             }
     
     # Almacena el request en la colección requests de MongoDB
-    #print(request_data)
     dbController.create("requests", request_data)
 
 
     # Si el intent identificado con Watson tiene una respuesta en MongoDB envía la respuesta indicada
     try:
-        print(request_data.get("intent"), request_data.get("entity-value"))
+        #print(request_data.get("intent"), request_data.get("entity-value"))
         # Depende de cada intent el cómo se va a armar el html que verá el usuario, hay cuatro opciones: sin intent, "meet requirements", "meet activity" y "contact"
         # Debe regresar los pasos para completar la actividad especifica
         if request_data.get("intent")=="questionMeetActivityRequirements":
@@ -166,26 +165,27 @@ def watson_response(session_id1, message, channel):
             requirement = dbController.retrieve_requirement(request_data.get("entity-value"))
             # If activity returns one, it has been completed
             if user_data[request_data.get("entity-value")] == 1:
-                print("user has completed the ", request_data.get("entity-value"))
+                #print("user has completed the ", request_data.get("entity-value"))
                 response = dbController.retrieve_answer("responses", request_data.get("intent"), None, "positive", channel)
             # If activity returns zero, it hasn't been completed
             elif user_data[request_data.get("entity-value")] == 0:
-                print("user hasn't completed the ", request_data.get("entity-value"))
+                #print("user hasn't completed the ", request_data.get("entity-value"))
                 response = dbController.retrieve_answer("responses", request_data.get("intent"), None, "negative", channel)
             response = txtBldr.merge_text(response, requirement, channel )
-            print("activity requirements")
+            #print("activity requirements")
         elif request_data.get("intent")=="questionMeetActivity":
-            print("activity completeness")
+            #print("activity completeness")
             # First, retrieve user status on asked activities
             user_data = dbController.retrieve_completed_activities(email,request_data.get("entity-value"))
             requirement = dbController.retrieve_requirement(request_data.get("entity-value"))
             # If activity returns one, it has been completed
             if user_data[request_data.get("entity-value")] == 1:
-                print("user has completed the ", request_data.get("entity-value"))
+                #print("true")
+                #print("user has completed the ", request_data.get("entity-value"))
                 response = dbController.retrieve_answer("responses", request_data.get("intent"), None, "positive", channel)
             # If activity returns zero, it hasn't been completed
             elif user_data[request_data.get("entity-value")] == 0:
-                print("user hasn't completed the ", request_data.get("entity-value"))
+                #print("user hasn't completed the ", request_data.get("entity-value"))
                 response = dbController.retrieve_answer("responses", request_data.get("intent"), None, "negative", channel)
             response = txtBldr.merge_text(response, requirement, channel )
         elif request_data.get("intent")=="questionContact":
@@ -195,19 +195,21 @@ def watson_response(session_id1, message, channel):
             response = dbController.retrieve_answer("responses", request_data.get("intent"), None, None, channel)
             # Substitute data in contact card with specific requirement values
             response = txtBldr.merge_text(response, requirement, channel )
-            print("contact")    
+            #print("contact")    
         elif request_data.get("intent")=="questionDate":
-            print("question date")
+            #print("question date")
             # First retrieve requirement
             event = dbController.retrieve_event(request_data.get("entity-value"))
             # Then retrieve the answer
             response = dbController.retrieve_answer("responses", request_data.get("intent"), None, None, channel)
             # Substitute data in contact card with specific requirement values
             response = txtBldr.merge_text(response, event, channel )
-            print("date")    
+            #print(response)    
         elif request_data.get("intent")=="questionIncompleteActivities":
+            #print("elif")
             user_data = dbController.retrieve_completed_activities(email,None)
             user_activities = dbController.retrieve_activities_data(user_data,0)
+            #print(user_data)
             
             # No activities are left to complete
             if len(user_activities) == 0:
@@ -215,11 +217,13 @@ def watson_response(session_id1, message, channel):
             # User has some activities to complete
             else:
                 response = dbController.retrieve_answer("responses", request_data.get("intent"), None, "list", channel)
+            #print(response)
             if channel == "telephone":
                 response = txtBldr.merge_carousel(response, txtBldr.create_detail_list(user_activities))
             elif channel == "web":
                 response = txtBldr.merge_carousel(response, txtBldr.create_carousel(user_activities))
-            print("incomplete")
+            #print(response)
+            #print("incomplete")
         elif request_data.get("intent")=="questionCompletedActivities":
             user_data = dbController.retrieve_completed_activities(email,None)
             user_activities = dbController.retrieve_activities_data(user_data,1)
@@ -233,10 +237,9 @@ def watson_response(session_id1, message, channel):
                 response = txtBldr.merge_carousel(response, txtBldr.create_detail_list(user_activities))
             elif channel == "web":
                 response = txtBldr.merge_carousel(response, txtBldr.create_carousel(user_activities))
-            print("completed")
-
+            #print("completed")
         else:
-            print("other")
+            #print("other")
             user_data = dbController.retrieve_student_info(email)
             response = dbController.retrieve_answer("responses", request_data.get("intent"), request_data.get("entity-value"), None, channel)
             response = txtBldr.merge_text(response, user_data, channel )
@@ -262,7 +265,7 @@ def watson_instance(iam_apikey: str, url: str, version: str = "2019-02-28") -> A
 class GET_MESSAGE(Resource):
     def post(self):
         message = request.json["message"]
-        print ("message: "+ message )
+        #print ("message: "+ message )
         resp = watson_response(watson_create_session(), request.json["message"], "web" )
         # return jsonify( este_es_el_mensaje = request.json["message"])
         return jsonify(
@@ -273,7 +276,7 @@ class GET_MESSAGE_WHATSAPP(Resource):
     def post(self):
         number = request.form['From']
         message_body = request.form['Body']
-        print ("message: "+ message_body + " phone " + number)
+        #print ("message: "+ message_body + " phone " + number)
         resp = watson_response(watson_create_session(), message_body, "telephone" )
         waController.send_message(number, resp)
         return

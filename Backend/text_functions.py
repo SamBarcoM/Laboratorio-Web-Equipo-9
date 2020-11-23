@@ -1,6 +1,12 @@
 class textBuilder():
     def __init__( self ):
         self.carousel_count = 0
+        self.images = [
+            "https://images.unsplash.com/photo-1536965764833-5971e0abed7c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
+            "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+            "https://images.unsplash.com/photo-1476081718509-d5d0b661a376?ixlib=rb-1.2.1&auto=format&fit=crop&w=633&q=80"
+
+        ]
         return
 
     # Create an list with an array adapting it to a given channel
@@ -30,7 +36,9 @@ class textBuilder():
                 indicators = indicators + '<li data-target="#carousel' + str(self.carousel_count) + '" data-slide-to="0" class="active"></li>'
                 items = items + """
                     <div class="carousel-item active">       
-                    <img class="d-block w-100" src="https://source.unsplash.com/random/400x400" alt="
+                    <img class="d-block w-100" src="       
+                """ + self.images[count%3] + """
+                    " height="300" width="300" alt="
                 """ + str(count) + """
                     slide"/>     
                     <div class="carousel-caption d-none d-md-block">
@@ -46,7 +54,9 @@ class textBuilder():
                 indicators = indicators + '<li data-target="#carousel' + str(self.carousel_count) + '" data-slide-to="' + str(count) + '" class="active"></li>'
                 items = items + """
                     <div class="carousel-item">       
-                    <img class="d-block w-100" src="https://source.unsplash.com/random/400x400" alt="
+                    <img class="d-block w-100" src="       
+                """ + self.images[count%3] + """
+                    " width="300" height="300" alt="
                 """ + str(count) + """
                     slide"/>     
                     <div class="carousel-caption d-none d-md-block">

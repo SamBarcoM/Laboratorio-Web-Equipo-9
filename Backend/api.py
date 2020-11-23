@@ -24,8 +24,6 @@ from text_functions import textBuilder
 from mongo_functions import mongoController
 from twilio_functions import whatsappController
  
-account_sid = 'ACcd05049a2f41238d3c7a8f840e098a1a' 
-auth_token = '9d85f161adf8dd0c4ddfb823d7cc22df' 
 client = Client(account_sid, auth_token) 
 
 email = "a01196844@itesm.mx"
