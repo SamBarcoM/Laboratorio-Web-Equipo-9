@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 #MongoDB
 import sys
 import pymongo
-import bson
 
 load_dotenv()
 
@@ -155,22 +154,11 @@ class mongoController():
             if value == completeness:
                 activities.append(collection.find_one({"id":key}))
         return activities
+
+    def get_entity_amount(self, entity):
+        collection = self.db["requests"]
+        requests = collection.find({"entity-value":entity}).count()
+        return requests
+
     
-    def to_int( self, collection_name ):
-        collection = self.db[collection_name]
-        for student in collection.find():
-            student["career exam"] = int(student["career exam"])
-            student["CENEVAL"] = int(student["CENEVAL"])
-            student["e sign"] = int(student["e sign"])
-            student["education credit"] = int(student["education credit"])
-            student["english exam"] = int(student["english exam"])
-            student["financial services"] = int(student["financial services"])
-            student["graduation request"] = int(student["graduation request"])
-            student["library"] = int(student["library"])
-            student["photography"] = int(student["photography"])
-            student["program"] = int(student["program"])
-            student["social service"] = int(student["social service"])
-            collection.save(student)
-
-
 mongoController.INSTANCE = mongoController()

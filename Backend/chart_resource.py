@@ -37,8 +37,24 @@ class ChartResource(Resource):
         percentage_student_to_graduate = 100 * mongoController.INSTANCE.get_student_completed_count() / mongoController.INSTANCE.get_students_count()
         # print(percentage_student_to_graduate)
 
+        # Most searched for requirements
+        entity_word_cloud = [
+            { "text": 'Photography', "value": mongoController.INSTANCE.get_entity_amount("photography") },
+            { "text": 'CENEVAL', "value": mongoController.INSTANCE.get_entity_amount("CENEVAL") },
+            { "text": 'E-sign', "value": mongoController.INSTANCE.get_entity_amount("e sign") },
+            { "text": 'Education Credit', "value": mongoController.INSTANCE.get_entity_amount("education credit") },
+            { "text": 'English Exam', "value": mongoController.INSTANCE.get_entity_amount("english exam") },
+            { "text": 'Financial Services', "value": mongoController.INSTANCE.get_entity_amount("financial services") },
+            { "text": 'Graduation Request', "value": mongoController.INSTANCE.get_entity_amount("graduation request") },
+            { "text": 'Library', "value": mongoController.INSTANCE.get_entity_amount("library") },
+            { "text": 'Program', "value": mongoController.INSTANCE.get_entity_amount("program") },
+            { "text": 'Social Service', "value": mongoController.INSTANCE.get_entity_amount("social service") }
+        ]
+
         return jsonify({
             'unique_users_per_month': unique_users_per_month,
             'no_missing_per_reqs': no_missing_per_reqs,
             'percentage_student_to_graduate': percentage_student_to_graduate,
+            'entity_word_cloud':entity_word_cloud,
+            
         })
