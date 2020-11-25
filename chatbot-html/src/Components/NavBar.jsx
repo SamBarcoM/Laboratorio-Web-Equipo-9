@@ -57,7 +57,7 @@ class NavBar extends React.Component {
     render() {
         return (
             <Navbar bg="tec" variant="dark">
-                <Navbar.Brand href="/">Proyecto Web</Navbar.Brand>
+                <Navbar.Brand as={Link} to="/">Proyecto Web</Navbar.Brand>
                 <Nav className="mr-auto">
                     <Nav.Link as={Link} to="/home">miTec</Nav.Link>
                     <Nav.Link as={Link} to="/user">Administradores</Nav.Link>
