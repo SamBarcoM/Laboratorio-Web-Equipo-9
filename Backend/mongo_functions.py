@@ -173,6 +173,7 @@ class mongoController():
 
     def get_entity_amount(self, entity):
         collection = self.db["requests"]
+<<<<<<< Updated upstream
         requests = collection.count_documents({"entity-value":entity})
         return requests
 
@@ -181,5 +182,10 @@ class mongoController():
         collection = self.db["students"]
         reqs = collection.count_documents({entity:0,"campus":campus})
         return reqs
+=======
+        requests = collection.find({"entity-value":entity}).count()
+        return requests
+
+>>>>>>> Stashed changes
     
 mongoController.INSTANCE = mongoController()
