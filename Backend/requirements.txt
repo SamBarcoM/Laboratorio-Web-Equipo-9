@@ -11,3 +11,5 @@ Flask-SQLAlchemy==2.4.1
 jsonify==0.5
 ibm-watson==4.1.0
 dnspython==2.0.0
+twilio==6.47.0
+pymongo==3.11.0
