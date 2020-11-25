@@ -22,7 +22,8 @@ class User extends React.Component{
         samplePercentageCompletedUsers: null,
         samplePercentageData: null,
         sampleNoUsersUsingFeature: null,
-        sampleStuckOnIntent:[]
+        sampleStuckOnIntent:[],
+        sampleReqsPerCampus:[]
     }
 
     async componentDidMount() {
@@ -32,8 +33,8 @@ class User extends React.Component{
            samplePercentageCompletedUsers: data.percentage_student_to_graduate,
            samplePercentageData: this.calculateCircularData(data.percentage_student_to_graduate),
            sampleNoUsersUsingFeature: data.unique_users_per_month,
-           sampleStuckOnIntent: data.entity_word_cloud
-
+           sampleStuckOnIntent: data.entity_word_cloud,
+           sampleReqsPerCampus: data.requirements_per_campus
         });
     }
 
@@ -144,44 +145,44 @@ class User extends React.Component{
                           <VictoryStack colorScale={["#334d5c","#45b29d","#efc94c","#e37c4a","#df5a49","#4f7da1","#55dbc1","#efda97","#e2a37f","#df948a"]}>
 
                             <VictoryBar
-                              // Career Exam
-                              data={[{x: "CEM", y: 30}, {x: "CSF", y: 10}, {x: "CCM", y: 15}]}
+                              // Career Exam  
+                              data={this.state.sampleReqsPerCampus[0]}
                             />
                             <VictoryBar
                               // E-sign
-                              data={[{x: "CEM", y: 25}, {x: "CSF", y: 9}, {x: "CCM", y: 16}]}
+                              data={this.state.sampleReqsPerCampus[1]}
                             />
                             <VictoryBar
                               // Education Credit
-                              data={[{x: "CEM", y: 23}, {x: "CSF", y: 5}, {x: "CCM", y: 13}]}
+                              data={this.state.sampleReqsPerCampus[2]}
                             /> 
                             <VictoryBar
                               // English Exam
-                              data={[{x: "CEM", y: 23}, {x: "CSF", y: 5}, {x: "CCM", y: 13}]}
+                              data={this.state.sampleReqsPerCampus[3]}
                             /> 
                             <VictoryBar
                               // Financial Services
-                              data={[{x: "CEM", y: 23}, {x: "CSF", y: 5}, {x: "CCM", y: 13}]}
+                              data={this.state.sampleReqsPerCampus[4]}
                             /> 
                             <VictoryBar
                               // Graduation Request
-                              data={[{x: "CEM", y: 23}, {x: "CSF", y: 5}, {x: "CCM", y: 13}]}
+                              data={this.state.sampleReqsPerCampus[5]}
                             /> 
                             <VictoryBar
                               // Library
-                              data={[{x: "CEM", y: 23}, {x: "CSF", y: 5}, {x: "CCM", y: 13}]}
+                              data={this.state.sampleReqsPerCampus[6]}
                             /> 
                             <VictoryBar
                               // Photography
-                              data={[{x: "CEM", y: 23}, {x: "CSF", y: 5}, {x: "CCM", y: 13}]}
+                              data={this.state.sampleReqsPerCampus[7]}
                             /> 
                             <VictoryBar
                               // Program
-                              data={[{x: "CEM", y: 23}, {x: "CSF", y: 5}, {x: "CCM", y: 13}]}
+                              data={this.state.sampleReqsPerCampus[8]}
                             /> 
                             <VictoryBar
                               // Social Service
-                              data={[{x: "CEM", y: 23}, {x: "CSF", y: 5}, {x: "CCM", y: 13}]}
+                              data={this.state.sampleReqsPerCampus[9]}
                             /> 
                           </VictoryStack>
                         </VictoryChart>

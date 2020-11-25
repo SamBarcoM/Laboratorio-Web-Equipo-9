@@ -1,9 +1,13 @@
 import os
 from dotenv import load_dotenv
+from collections import defaultdict
+from pprint import pprint
 
 #MongoDB
 import sys
 import pymongo
+import datetime
+from datetime import timezone
 
 load_dotenv()
 
@@ -58,7 +62,8 @@ class mongoController():
 
         for calculation in calculation_cursor:
             months.append(calculation)
-        
+        months.sort(key=lambda x: x['_id'] if x['_id'] else 13)
+        pprint(months)
         return months
 
     # Retrieve all users.
@@ -75,6 +80,17 @@ class mongoController():
         return collection.count_documents({ field_name: 1 })
     
     def get_student_completed_count(self):
+        # a = self.db["requests"]
+        # f = a.find({"created_at":{"$eq":None}})
+        # c = 0
+        # date_fake=datetime.datetime(2020, 5, 1, tzinfo=timezone.utc)
+        # # date_fake.replace(month=10)
+        # for r in f:
+        #     if c == 33:
+        #         break
+        #     c+=1
+        #     # r["created_at"]=date_fake
+        #     a.update({"_id" : r["_id"]}, {"$set" : {"created_at" :date_fake}})
         collection = self.db["students"]
         return collection.count_documents({
             'career exam': 1,
@@ -157,8 +173,13 @@ class mongoController():
 
     def get_entity_amount(self, entity):
         collection = self.db["requests"]
-        requests = collection.find({"entity-value":entity}).count()
+        requests = collection.count_documents({"entity-value":entity})
         return requests
 
+    def get_req_per_campus(self, entity, campus):
+
+        collection = self.db["students"]
+        reqs = collection.count_documents({entity:0,"campus":campus})
+        return reqs
     
 mongoController.INSTANCE = mongoController()

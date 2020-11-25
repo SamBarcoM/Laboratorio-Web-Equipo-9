@@ -51,10 +51,74 @@ class ChartResource(Resource):
             { "text": 'Social Service', "value": mongoController.INSTANCE.get_entity_amount("social service") }
         ]
 
+        requirements_per_campus = [
+            # Career Exam 0
+            [
+                {"x": "CEM", "y":mongoController.INSTANCE.get_req_per_campus("career exam","CEM")},
+                {"x": "CSF", "y":mongoController.INSTANCE.get_req_per_campus("career exam","CSF")},
+                {"x": "CCM", "y":mongoController.INSTANCE.get_req_per_campus("career exam","CCM")}
+            ],
+            # E-sign 1
+            [
+                {"x": "CEM", "y":mongoController.INSTANCE.get_req_per_campus("e sign","CEM")},
+                {"x": "CSF", "y":mongoController.INSTANCE.get_req_per_campus("e sign","CSF")},
+                {"x": "CCM", "y":mongoController.INSTANCE.get_req_per_campus("e sign","CCM")}
+            ],
+            # Education Credit 2
+            [
+                {"x": "CEM", "y":mongoController.INSTANCE.get_req_per_campus("education credit","CEM")},
+                {"x": "CSF", "y":mongoController.INSTANCE.get_req_per_campus("education credit","CSF")},
+                {"x": "CCM", "y":mongoController.INSTANCE.get_req_per_campus("education credit","CCM")}
+            ],
+            # English Exam 3
+            [
+                {"x": "CEM", "y":mongoController.INSTANCE.get_req_per_campus("english exam","CEM")},
+                {"x": "CSF", "y":mongoController.INSTANCE.get_req_per_campus("english exam","CSF")},
+                {"x": "CCM", "y":mongoController.INSTANCE.get_req_per_campus("english exam","CCM")}
+            ],
+            # Financial Services 4
+            [
+                {"x": "CEM", "y":mongoController.INSTANCE.get_req_per_campus("financial services","CEM")},
+                {"x": "CSF", "y":mongoController.INSTANCE.get_req_per_campus("financial services","CSF")},
+                {"x": "CCM", "y":mongoController.INSTANCE.get_req_per_campus("financial services","CCM")}
+            ],
+            # Graduation Request 5
+            [
+                {"x": "CEM", "y":mongoController.INSTANCE.get_req_per_campus("graduation request","CEM")},
+                {"x": "CSF", "y":mongoController.INSTANCE.get_req_per_campus("graduation request","CSF")},
+                {"x": "CCM", "y":mongoController.INSTANCE.get_req_per_campus("graduation request","CCM")}
+            ],
+            # Library 6
+            [
+                {"x": "CEM", "y":mongoController.INSTANCE.get_req_per_campus("library","CEM")},
+                {"x": "CSF", "y":mongoController.INSTANCE.get_req_per_campus("library","CSF")},
+                {"x": "CCM", "y":mongoController.INSTANCE.get_req_per_campus("library","CCM")}
+            ],
+            # Photography 7
+            [
+                {"x": "CEM", "y":mongoController.INSTANCE.get_req_per_campus("photography","CEM")},
+                {"x": "CSF", "y":mongoController.INSTANCE.get_req_per_campus("photography","CSF")},
+                {"x": "CCM", "y":mongoController.INSTANCE.get_req_per_campus("photography","CCM")}
+            ],
+            # Program 8
+            [
+                {"x": "CEM", "y":mongoController.INSTANCE.get_req_per_campus("program","CEM")},
+                {"x": "CSF", "y":mongoController.INSTANCE.get_req_per_campus("program","CSF")},
+                {"x": "CCM", "y":mongoController.INSTANCE.get_req_per_campus("program","CCM")}
+            ],
+            # Social Service 9
+            [
+                {"x": "CEM", "y":mongoController.INSTANCE.get_req_per_campus("social service","CEM")},
+                {"x": "CSF", "y":mongoController.INSTANCE.get_req_per_campus("social service","CSF")},
+                {"x": "CCM", "y":mongoController.INSTANCE.get_req_per_campus("social service","CCM")}
+            ],
+        ]
+
         return jsonify({
             'unique_users_per_month': unique_users_per_month,
             'no_missing_per_reqs': no_missing_per_reqs,
             'percentage_student_to_graduate': percentage_student_to_graduate,
-            'entity_word_cloud':entity_word_cloud,
+            'entity_word_cloud': entity_word_cloud,
+            'requirements_per_campus':requirements_per_campus
             
         })
