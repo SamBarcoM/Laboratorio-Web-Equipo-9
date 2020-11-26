@@ -173,19 +173,19 @@ class mongoController():
 
     def get_entity_amount(self, entity):
         collection = self.db["requests"]
-<<<<<<< Updated upstream
         requests = collection.count_documents({"entity-value":entity})
         return requests
 
     def get_req_per_campus(self, entity, campus):
-
         collection = self.db["students"]
         reqs = collection.count_documents({entity:0,"campus":campus})
         return reqs
-=======
-        requests = collection.find({"entity-value":entity}).count()
-        return requests
-
->>>>>>> Stashed changes
+    
+    def get_failed_intents(self):
+        collection = self.db["requests"]
+        all_requests = []
+        for req in collection.find({"intent": None, "entity-value": None}):
+            all_requests.append(req)
+        return all_requests
     
 mongoController.INSTANCE = mongoController()

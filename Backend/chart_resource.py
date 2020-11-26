@@ -1,5 +1,12 @@
 from flask import jsonify
 from flask_restful import Resource
+from collections import Counter, defaultdict
+from pprint import pprint
+import nltk
+nltk.download('stopwords')
+nltk.download('punkt')
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 
 from mongo_functions import mongoController
 
@@ -114,11 +121,31 @@ class ChartResource(Resource):
             ],
         ]
 
+        # Returns top 10 words which are relavant and its count.
+        word_count = defaultdict(int)
+        all_failed_intents = mongoController.INSTANCE.get_failed_intents()
+        for failed_intent in all_failed_intents:
+            text_tokens = word_tokenize(failed_intent['message'].lower())
+            tokens_without_sw = [word for word in text_tokens if not word in stopwords.words()]
+            filtered_sentence = (" ").join(tokens_without_sw)
+            for word in filtered_sentence.split():
+                # word sanitize.
+                filtered_word = ''.join(c for c in word if c.isalnum())
+                if len(filtered_word) > 2:
+                    word_count[filtered_word] += 1
+        
+        top_dict = Counter(word_count).most_common(5)
+        # pprint(top_dict)
+        # print(len(all_failed_intents))
+        failed_intent_word_count = [
+            {"text": key, "value": value} for key, value in top_dict
+        ]
+
         return jsonify({
             'unique_users_per_month': unique_users_per_month,
             'no_missing_per_reqs': no_missing_per_reqs,
             'percentage_student_to_graduate': percentage_student_to_graduate,
             'entity_word_cloud': entity_word_cloud,
-            'requirements_per_campus':requirements_per_campus
-            
+            'requirements_per_campus':requirements_per_campus,
+            'failed_intent_word_count': failed_intent_word_count,
         })

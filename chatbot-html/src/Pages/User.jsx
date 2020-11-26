@@ -18,23 +18,25 @@ import {Container, Button, Row, Col, Card } from 'react-bootstrap';
 
 class User extends React.Component{
     state = {
+        failedIntentWordCount: [],
         sampleNoIntentAsking: null,
         samplePercentageCompletedUsers: null,
         samplePercentageData: null,
         sampleNoUsersUsingFeature: null,
         sampleStuckOnIntent:[],
-        sampleReqsPerCampus:[]
+        sampleReqsPerCampus:[],
     }
 
     async componentDidMount() {
         const { data } = await axios.get('http://127.0.0.1:5002/charts');
         this.setState({
+           failedIntentWordCount: data.failed_intent_word_count,
            sampleNoIntentAsking: data.no_missing_per_reqs,
            samplePercentageCompletedUsers: data.percentage_student_to_graduate,
            samplePercentageData: this.calculateCircularData(data.percentage_student_to_graduate),
            sampleNoUsersUsingFeature: data.unique_users_per_month,
            sampleStuckOnIntent: data.entity_word_cloud,
-           sampleReqsPerCampus: data.requirements_per_campus
+           sampleReqsPerCampus: data.requirements_per_campus,
         });
     }
 
@@ -56,6 +58,9 @@ class User extends React.Component{
 
         const sampleFontSizeMapper = word => Math.log2(word.value) * 10;
         const sampleRotate = word => 0;
+
+        const sampleFontSizeMapperFailed = word => Math.log2(word.value) * 30;
+        const sampleRotateFailed = word => 0;
 
         // (Bargraph) People missing certain requirements.
         
@@ -226,6 +231,26 @@ class User extends React.Component{
                           }}
                       </VictoryAnimation>
                   </svg>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+              <Row>
+                {/* <p>Se pueden revisar los siguientes datos basados en las preguntas de los alumnos</p> */}
+                <Col>
+                <Card border="primary" style={{ width: '66rem' }}>
+                    <Card.Header>WordCloud of most asked requirements that were not recognized</Card.Header>
+                    <Card.Body>
+                      <Card.Title>Requisitos mas buscados no reconocidos</Card.Title>
+                      <div className="wordCloudClass">
+                  <WordCloud
+                      data= {this.state.failedIntentWordCount}
+                      // data= {sampleStuckOnIntent}
+                      fontSizeMapper={sampleFontSizeMapperFailed}
+                      rotate={sampleRotateFailed}
+                      
+                  />
+                  </div>
                     </Card.Body>
                   </Card>
                 </Col>
