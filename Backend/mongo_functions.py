@@ -63,7 +63,7 @@ class mongoController():
         for calculation in calculation_cursor:
             months.append(calculation)
         months.sort(key=lambda x: x['_id'] if x['_id'] else 13)
-        pprint(months)
+        # pprint(months)
         return months
 
     # Retrieve all users.

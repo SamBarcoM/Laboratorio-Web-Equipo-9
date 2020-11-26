@@ -27,17 +27,17 @@ class ChartResource(Resource):
         
         # Get number of missing counts per requirements.
         no_missing_per_reqs = [
-            { 'x': "Career Exam", 'y': mongoController.INSTANCE.get_student_field_count('career exam'), 'y0': 0 }, # Career Exam.
-            { 'x': "CENEVAL", 'y': mongoController.INSTANCE.get_student_field_count('CENEVAL'), 'y0': 0 }, # CENEVAL.
-            { 'x': "e Signature", 'y': mongoController.INSTANCE.get_student_field_count('e sign'), 'y0': 0 }, # E Signature.
-            { 'x': "Education Credit", 'y': mongoController.INSTANCE.get_student_field_count('education credit'), 'y0': 0 }, # Education Credit.
-            { 'x': "English Exam", 'y': mongoController.INSTANCE.get_student_field_count('english exam'), 'y0': 0 }, # English Exam.
-            { 'x': "Financial Services", 'y': mongoController.INSTANCE.get_student_field_count('financial services'), 'y0': 0 }, # Financial Services.
-            { 'x': "Graduation Requests", 'y': mongoController.INSTANCE.get_student_field_count('graduation request'), 'y0': 0 }, # Graduation Requests.
-            { 'x': "Library", 'y': mongoController.INSTANCE.get_student_field_count('library'), 'y0': 0 }, # Library.
-            { 'x': "Photography", 'y': mongoController.INSTANCE.get_student_field_count('photography'), 'y0': 0 }, # Photography.
-            { 'x': "Program", 'y': mongoController.INSTANCE.get_student_field_count('program'), 'y0': 0 }, # Program.
-            { 'x': "Social Service", 'y': mongoController.INSTANCE.get_student_field_count('social service'), 'y0': 0 }, # Social Service.
+            { 'x': "1", 'y': mongoController.INSTANCE.get_student_field_count('career exam'), 'y0': 0 }, # Career Exam.
+            { 'x': "2", 'y': mongoController.INSTANCE.get_student_field_count('CENEVAL'), 'y0': 0 }, # CENEVAL.
+            { 'x': "3", 'y': mongoController.INSTANCE.get_student_field_count('e sign'), 'y0': 0 }, # E Signature.
+            { 'x': "4", 'y': mongoController.INSTANCE.get_student_field_count('education credit'), 'y0': 0 }, # Education Credit.
+            { 'x': "5", 'y': mongoController.INSTANCE.get_student_field_count('english exam'), 'y0': 0 }, # English Exam.
+            { 'x': "6", 'y': mongoController.INSTANCE.get_student_field_count('financial services'), 'y0': 0 }, # Financial Services.
+            { 'x': "7", 'y': mongoController.INSTANCE.get_student_field_count('graduation request'), 'y0': 0 }, # Graduation Requests.
+            { 'x': "8", 'y': mongoController.INSTANCE.get_student_field_count('library'), 'y0': 0 }, # Library.
+            { 'x': "9", 'y': mongoController.INSTANCE.get_student_field_count('photography'), 'y0': 0 }, # Photography.
+            { 'x': "10", 'y': mongoController.INSTANCE.get_student_field_count('program'), 'y0': 0 }, # Program.
+            { 'x': "11", 'y': mongoController.INSTANCE.get_student_field_count('social service'), 'y0': 0 }, # Social Service.
         ]
 
         # % of students ready to graduate.
